@@ -1,0 +1,6 @@
+[Unit]
+Description=FieldBox self-heal health check
+
+[Service]
+Type=oneshot
+ExecStart=/opt/fieldbox/scripts/health-check.sh

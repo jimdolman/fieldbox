@@ -1,0 +1,18 @@
+[Unit]
+Description=FieldBox kiosk display (cage + Chromium)
+After=fieldbox-ui.service
+Wants=fieldbox-ui.service
+
+[Service]
+Type=simple
+User=fieldbox
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+# Wait for the backend to answer before painting the screen.
+ExecStartPre=/bin/sh -c 'until curl -sf http://127.0.0.1:8080/healthz >/dev/null; do sleep 1; done'
+ExecStart=/usr/bin/cage -- chromium-browser --kiosk --noerrdialogs --disable-infobars \
+  --disable-pinch --overscroll-history-navigation=0 --incognito http://127.0.0.1:8080
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=graphical.target

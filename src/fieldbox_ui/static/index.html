@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=800, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>FieldBox</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main id="app">
+      <header class="topbar">
+        <div class="brand">FieldBox</div>
+        <div id="wan" class="wan">WAN: —</div>
+      </header>
+
+      <section class="hero">
+        <div id="light" class="light unknown"></div>
+        <div class="hero-text">
+          <div id="state" class="state">Loading…</div>
+          <div id="reason" class="reason"></div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <div class="label">Subnet (detected)</div>
+          <div id="lan" class="value">—</div>
+        </div>
+        <div class="card">
+          <div class="label">Advertised / approved</div>
+          <div id="routes" class="value">—</div>
+        </div>
+        <div class="card">
+          <div class="label">Tailnet</div>
+          <div id="tailnet" class="value">—</div>
+        </div>
+        <div class="card">
+          <div class="label">This device</div>
+          <div id="ip" class="value">—</div>
+        </div>
+      </section>
+
+      <section class="actions">
+        <button id="btn-connect" class="btn primary">Connect</button>
+        <button id="btn-subnet" class="btn">Change subnet</button>
+        <button id="btn-redetect" class="btn">Re-detect</button>
+        <button id="btn-reboot" class="btn danger">Reboot</button>
+      </section>
+    </main>
+
+    <!-- Change-subnet modal -->
+    <div id="modal" class="modal hidden">
+      <div class="modal-card">
+        <div class="modal-title">Advertise which subnet?</div>
+        <input id="cidr" class="cidr-input" inputmode="decimal" placeholder="e.g. 192.168.10.0/24" />
+        <div class="modal-actions">
+          <button id="modal-cancel" class="btn">Cancel</button>
+          <button id="modal-ok" class="btn primary">Apply</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

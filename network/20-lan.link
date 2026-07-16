@@ -1,0 +1,7 @@
+# /etc/systemd/network/20-lan.link
+# Pins the production-network port (the one we subnet-route) to a stable name: lan0.
+[Match]
+MACAddress=de:ad:be:ef:00:02
+
+[Link]
+Name=lan0

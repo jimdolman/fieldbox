@@ -1,0 +1,23 @@
+// FieldBox tailnet policy (excerpt) — paste the relevant blocks into your
+// tailnet's Access Controls at https://login.tailscale.com/admin/acls
+//
+// Key idea: the box advertises whatever RFC1918 subnet its LAN port lands on,
+// and autoApprovers approves it automatically — no admin click per job.
+{
+  "tagOwners": {
+    "tag:subnetrouter": ["autogroup:admin"]
+  },
+
+  "autoApprovers": {
+    "routes": {
+      "10.0.0.0/8":     ["tag:subnetrouter"],
+      "172.16.0.0/12":  ["tag:subnetrouter"],
+      "192.168.0.0/16": ["tag:subnetrouter"]
+    }
+  },
+
+  // Optional: let your own devices reach anything the FieldBox routes.
+  "acls": [
+    { "action": "accept", "src": ["autogroup:member"], "dst": ["*:*"] }
+  ]
+}

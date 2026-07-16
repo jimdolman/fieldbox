@@ -1,0 +1,8 @@
+# /etc/systemd/network/10-wan.link
+# Pins the wired-internet (WAN) port to a stable name: wan0.
+# Find the MAC of the port you want as WAN:  ip -br link
+[Match]
+MACAddress=de:ad:be:ef:00:01
+
+[Link]
+Name=wan0

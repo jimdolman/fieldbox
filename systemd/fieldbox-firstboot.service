@@ -1,0 +1,13 @@
+[Unit]
+Description=FieldBox first-boot Tailscale bring-up
+After=network-online.target tailscaled.service
+Wants=network-online.target tailscaled.service
+ConditionPathExists=!/var/lib/fieldbox/provisioned
+
+[Service]
+Type=oneshot
+ExecStart=/opt/fieldbox/scripts/firstboot.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
