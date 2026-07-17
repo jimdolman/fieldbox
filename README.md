@@ -5,7 +5,9 @@ venue / production network and the rest of your tailnet can reach devices on tha
 Built to be operated by a non-technical person: power on → green light → done, with a
 touchscreen for the one thing that varies (the subnet).
 
-See **[PLAN.md](PLAN.md)** for the full hardware BOM, network design, and rationale.
+See **[PLAN.md](PLAN.md)** for the network design and rationale, the
+**[build pack PDF](docs/FieldBox-BuildPack.pdf)** for finalized decisions + schematics + case mockup,
+and **[docs/SHOPPING-LIST.md](docs/SHOPPING-LIST.md)** for everything to buy.
 
 ## What it does
 
@@ -20,10 +22,11 @@ See **[PLAN.md](PLAN.md)** for the full hardware BOM, network design, and ration
 ```
 src/fieldbox_ui/     FastAPI backend + touch web dashboard (static/)
 systemd/             services: ui, kiosk (cage+chromium), firstboot, health timer
-network/             10-wan.link / 20-lan.link  (pin interface names by MAC)
+network/             10-wan / 20-lan / 30-wwan .link  (pin wan0/lan0/wwan0 by MAC)
 config/              99-forwarding.conf (IP forward), watchdog.conf (hw watchdog)
 tailscale/           acl.hujson  (tagOwners + autoApprovers to paste into your ACLs)
 scripts/             setup.sh (provision the Pi), firstboot.sh, health-check.sh
+docs/                build pack (HTML+PDF), shopping list, dashboard screenshots
 ```
 
 ## Dev preview (on your Mac / any laptop)
@@ -50,6 +53,6 @@ uvicorn fieldbox_ui.app:app --reload --host 127.0.0.1 --port 8080 --app-dir src
 
 ## Status
 
-Scaffold / work-in-progress — being refined via Ultraplan. Sections marked `TODO` in the
-code (e.g. the exact "approved routes" field name) need confirming against the pinned
-Tailscale version and the chosen carrier board's display connector (DSI vs micro-HDMI).
+Scaffold, with all hardware/software decisions finalized (see the build pack PDF). The code
+runs and the dashboard renders; remaining work is on-device bring-up, the case fabrication,
+and confirming the two hardware buy-early checks in `docs/SHOPPING-LIST.md`.

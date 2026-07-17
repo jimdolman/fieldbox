@@ -1,0 +1,9 @@
+# /etc/systemd/network/30-wwan.link
+# Pins the 4G HiLink modem (Huawei E3372h-320) to a stable name: wwan0.
+# The HiLink dongle enumerates as a USB-Ethernet (CDC-ECM) interface with its
+# own DHCP; find its MAC with `ip -br link` after plugging it in.
+[Match]
+MACAddress=de:ad:be:ef:00:03
+
+[Link]
+Name=wwan0

@@ -49,10 +49,11 @@ def advertised_routes() -> list[str]:
 
 
 def approved_routes(st: Optional[dict] = None) -> list[str]:
-    """Routes this node is actually serving (approved). Best-effort.
+    """Subnet routes this node is approved for and actively serving.
 
-    ``Self.PrimaryRoutes`` reflects the approved subnet routes in recent
-    Tailscale builds. TODO: confirm the field name against the pinned version.
+    Reads ``Self.PrimaryRoutes`` from ``tailscale status --json`` — the routes
+    the node is the primary router for, i.e. advertised AND approved. If a route
+    is advertised but absent here, the UI shows it as "pending".
     """
     st = st if st is not None else status()
     self_ = (st or {}).get("Self") or {}

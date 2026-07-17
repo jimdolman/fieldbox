@@ -25,17 +25,19 @@ Most time goes to the GUI and the case, not the networking.
 
 ---
 
-## Hardware / BOM (~€300–400 per unit)
+## Hardware / BOM (~€330–420 per unit)
+
+Finalised part choices (see `docs/SHOPPING-LIST.md` for the full purchase list):
 
 | Part | Choice | Notes |
 |---|---|---|
-| Compute | **Raspberry Pi CM4** (4GB RAM / 32GB eMMC, Wi‑Fi variant) | Wi‑Fi gives a free 3rd WAN option later |
-| Carrier | **CM4 dual-Gigabit-Ethernet router board** (Seeed reRouter / DFRobot Router Mini / 52Pi) | Real dual GbE (onboard + PCIe), USB 3.0, micro‑HDMI |
-| WAN #2 | **USB 4G "HiLink" dongle** (e.g. Huawei E3372h‑320) + prepaid SIM | HiLink mode appears as a DHCP ethernet iface — no ModemManager/PPP needed. **Disable SIM PIN.** |
-| Display | **5" capacitive touchscreen** matching the carrier's connector | ⚠️ Most CM4 router boards expose **micro‑HDMI, not DSI** — pick an **HDMI** touch screen unless the chosen board routes DSI |
-| Power | Official 5V USB‑C PSU (or board's barrel jack) | Panel-mount USB‑C/barrel on the case |
-| Cooling | Heatsink + small 5V fan + Gore/vent plug | Sealed Pelicase needs airflow + a pressure vent |
-| Case | Pelicase 1150/1200 | Panel-mount: 2× RJ45 Cat6 feedthrough couplers, USB‑C power, 1–2× SMA bulkhead for 4G antenna |
+| Compute | **Raspberry Pi CM4104032** (4GB RAM / 32GB eMMC / Wi‑Fi) | eMMC = no SD failures; Wi‑Fi = free 3rd WAN later |
+| Carrier | **Seeed Dual Gigabit Ethernet CM4 carrier (reRouter CM4001)** | Real dual GbE (native + PCIe RTL8111), 2× USB 3.0, micro‑HDMI |
+| WAN #2 | **Huawei E3372h‑320 (HiLink)** + prepaid SIM | HiLink = DHCP ethernet iface, no ModemManager/PPP. Pinned `wwan0`, metric 700. **Disable SIM PIN.** |
+| Display | **5" HDMI capacitive touchscreen, 800×480** (Waveshare 5inch HDMI LCD (H)) | HDMI chosen because the carrier exposes **micro‑HDMI only** (no DSI). Touch over USB. |
+| Power | Official **5V/3A USB‑C** PSU | Panel-mount USB‑C feedthrough on the case |
+| Cooling | Heatsink + 30mm 5V fan + Gore/vent plug | Sealed Pelicase needs airflow + a pressure vent |
+| Case | Pelicase 1150/1200 | Panel-mount: 2× RJ45 Cat6 feedthrough, USB‑C power, SMA bulkhead for 4G antenna |
 
 Second-unit build is flash-and-go from a golden image.
 
@@ -48,7 +50,7 @@ the two NICs can otherwise enumerate inconsistently:
 
 - `wan0` — wired WAN RJ45 → DHCP client, **default route metric 100** (preferred)
 - `lan0` — production-network RJ45 → DHCP client, **never a default route** (`ipv4.never-default=yes`)
-- 4G iface (`usb0`/`wwan0`) — DHCP client, **default route metric 700** (backup)
+- `wwan0` — 4G HiLink modem (E3372h) → DHCP client, **default route metric 700** (backup), marked metered
 
 **Failover:** run **NetworkManager** (Bookworm default) with per-connection route metrics + its
 connectivity check. Live wired internet wins; if `wan0` loses connectivity NM demotes it and 4G's
@@ -87,7 +89,7 @@ default route takes over automatically; re-plugging fails back. `lan0` never car
    - Dashboard: big **ONLINE / CONNECTING / OFFLINE** light (+ reason); **WAN source** in use
      (Wired / 4G + signal bars); **detected vs advertised subnet + approved?**; tailnet name + this
      node's Tailscale IP. Buttons: **Connect/Disconnect, Change subnet, Re-detect, Details/logs, Reboot**.
-2. **`10-wan.link` / `20-lan.link`** + NetworkManager connection profiles (route metrics, `lan0` never-default).
+2. **`10-wan.link` / `20-lan.link` / `30-wwan.link`** + NetworkManager connection profiles (route metrics wan0=100 / wwan0=700, `lan0` never-default).
 3. **`/etc/sysctl.d/99-forwarding.conf`** — IP forwarding.
 4. **`fieldbox-firstboot.service`** — one-shot `tailscale up` with stored auth key on first boot.
 5. **`fieldbox-health.service` + timer** — self-heal: verify tailscaled running, WAN default route
@@ -126,10 +128,11 @@ default route takes over automatically; re-plugging fails back. `lan0` never car
 
 ---
 
-## Risks / gotchas to confirm early
-- **Display connector:** verify DSI vs micro‑HDMI on the exact carrier board **before** buying the screen.
-- **4G:** prefer a HiLink/ECM dongle (shows up as an ethernet iface) over PPP; **disable the SIM PIN**;
-  carrier CGNAT is fine for Tailscale (DERP/NAT traversal).
-- **Auth key expiry:** disable device key expiry so it never drops off.
-- **Heat:** sealed Pelicase → heatsink + fan + vent.
+## Buy-early checks (before ordering)
+- **Carrier display output:** confirm the exact reRouter revision's display connector is **micro‑HDMI**
+  (it is on current boards) — the chosen 5" screen is HDMI to match.
+- **4G firmware:** confirm the E3372h is the **HiLink** (USB-ethernet) firmware, not the stick/PPP one;
+  **disable the SIM PIN** before first insert. Carrier CGNAT is fine for Tailscale (DERP/NAT traversal).
+- **Auth key expiry:** disable device key expiry in the admin console so it never drops off.
+- **Heat:** sealed Pelicase → heatsink + fan + Gore vent.
 - **Security:** the image contains a tailnet auth key — keep images controlled; consider tailnet lock.

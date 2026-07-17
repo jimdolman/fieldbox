@@ -37,17 +37,19 @@ sudo mkdir -p /etc/systemd/system.conf.d
 sudo cp "${REPO_DST}/config/watchdog.conf" /etc/systemd/system.conf.d/
 
 echo "==> Interface pinning (.link) — EDIT MACs in network/*.link first!"
-sudo cp "${REPO_DST}/network/10-wan.link" "${REPO_DST}/network/20-lan.link" /etc/systemd/network/
+sudo cp "${REPO_DST}/network/10-wan.link" "${REPO_DST}/network/20-lan.link" \
+        "${REPO_DST}/network/30-wwan.link" /etc/systemd/network/
 
-echo "==> NetworkManager profiles (wired WAN preferred, LAN never-default)"
-# wan0: preferred internet (low metric). 4G connection should be metric 700.
+echo "==> NetworkManager profiles (wired WAN preferred, 4G backup, LAN never-default)"
+# wan0: preferred internet (low metric).
 sudo nmcli connection add type ethernet ifname wan0 con-name wan0 \
   ipv4.route-metric 100 ipv6.route-metric 100 2>/dev/null || true
+# wwan0: 4G HiLink modem — backup internet (high metric so it only wins if wan0 is down).
+sudo nmcli connection add type ethernet ifname wwan0 con-name wwan0 \
+  ipv4.route-metric 700 ipv6.route-metric 700 connection.metered yes 2>/dev/null || true
 # lan0: DHCP for an address to route from, but NEVER a default route.
 sudo nmcli connection add type ethernet ifname lan0 con-name lan0 \
   ipv4.never-default yes ipv6.never-default yes 2>/dev/null || true
-# NOTE: the 4G HiLink dongle usually appears as its own DHCP iface (usb0/eth1);
-#       add it as a connection with ipv4.route-metric 700 once you know its name.
 
 echo "==> systemd units"
 sudo cp "${REPO_DST}"/systemd/*.service "${REPO_DST}"/systemd/*.timer /etc/systemd/system/

@@ -13,8 +13,9 @@ import subprocess
 from typing import Optional
 
 # Interface names are pinned by the systemd .link files (see network/).
-LAN_IFACE = "lan0"   # the production network we subnet-route
-WAN_IFACE = "wan0"   # the wired internet port
+LAN_IFACE = "lan0"    # the production network we subnet-route
+WAN_IFACE = "wan0"    # the wired internet port
+WWAN_IFACE = "wwan0"  # the 4G HiLink modem (Huawei E3372h), route metric 700
 
 
 def _run(cmd: list[str], timeout: int = 5) -> Optional[str]:
@@ -68,7 +69,7 @@ def wan_source() -> str:
         return "offline"
     if dev == WAN_IFACE:
         return "wired"
-    if dev.startswith(("usb", "wwan", "ppp", "eth1")):
+    if dev == WWAN_IFACE or dev.startswith(("wwan", "usb", "ppp")):
         return "4g"
     return dev
 
