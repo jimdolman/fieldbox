@@ -44,7 +44,7 @@ uvicorn fieldbox_ui.app:app --reload --host 127.0.0.1 --port 8080 --app-dir src
 
 ## Deploy to the Pi (outline)
 
-1. Flash Raspberry Pi OS (Bookworm) to the CM4; enable SSH.
+1. Flash Raspberry Pi OS (Bookworm) to a microSD for the Pi 5 (Raspberry Pi Imager); enable SSH.
 2. `git clone` this repo onto the Pi and run `scripts/setup.sh` (review it first — it's a scaffold).
 3. Edit the MACs in `/etc/systemd/network/*.link` (find them with `ip -br link`), reboot.
 4. Drop a **tagged, reusable** Tailscale auth key into `/var/lib/fieldbox/authkey` (`chmod 600`).

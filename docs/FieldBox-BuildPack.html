@@ -110,12 +110,12 @@ Pelicase fabrication. None are hard; the time simply goes into polish and the ca
 <table>
   <thead><tr><th style="width:22%">Open item</th><th style="width:11%">Status</th><th>Decision &amp; reason</th></tr></thead>
   <tbody>
-    <tr><td>Display bus (DSI vs HDMI)</td><td class="fixed">FIXED</td>
-      <td><strong>HDMI.</strong> The chosen dual-GbE CM4 carrier exposes only micro-HDMI (no DSI header), so use a 5&Prime; <strong>HDMI</strong> capacitive touchscreen (800&times;480) via a short micro-HDMI ribbon + USB for touch.</td></tr>
-    <tr><td>Carrier board</td><td class="fixed">FIXED</td>
-      <td><strong>Seeed Dual-GbE CM4 carrier (reRouter CM4001).</strong> Two <em>true</em> GbE (native + PCIe RTL8111), 2&times; USB 3.0, micro-HDMI, microSD, USB-C power. Real NICs beat a USB dongle for stability.</td></tr>
-    <tr><td>Compute module</td><td class="fixed">FIXED</td>
-      <td><strong>CM4104032</strong> — 4 GB RAM, 32 GB eMMC, Wi-Fi/BT. eMMC avoids SD-card failures; Wi-Fi is a free third WAN later.</td></tr>
+    <tr><td>Compute platform</td><td class="fixed">FIXED</td>
+      <td><strong>Raspberry Pi 5 (8GB).</strong> Chosen over CM4 + reRouter carrier for <strong>availability</strong> (next-day at NL shops; CM4 has backorder lead times). Identical OS/software/touchscreen. Boots from microSD — no eMMC/rpiboot.</td></tr>
+    <tr><td>2nd Ethernet</td><td class="fixed">FIXED</td>
+      <td><strong>USB 3.0 &rarr; 2.5GbE adapter (Realtek RTL8156)</strong> = the WAN port; the Pi 5's built-in GbE = the LAN we route. Native Pi OS Bookworm support. Trade-off vs a PCIe NIC: it's USB, but instantly available.</td></tr>
+    <tr><td>Display bus</td><td class="fixed">FIXED</td>
+      <td><strong>HDMI.</strong> 5&Prime; <strong>HDMI</strong> capacitive touchscreen (800&times;480) via micro-HDMI &rarr; HDMI + USB for touch. (Pi 5 DSI + official Touch Display 2 is an alternative.)</td></tr>
     <tr><td>4G modem &amp; interface</td><td class="fixed">FIXED</td>
       <td><strong>Huawei E3372h-320 (HiLink/ECM).</strong> Appears as a DHCP Ethernet interface — no ModemManager/PPP. Pinned to <code>wwan0</code>, route metric 700. Prepaid SIM, <strong>PIN disabled</strong>.</td></tr>
     <tr><td>WAN failover logic</td><td class="fixed">FIXED</td>
@@ -142,15 +142,16 @@ Pelicase fabrication. None are hard; the time simply goes into polish and the ca
 <table>
   <thead><tr><th>#</th><th>Part</th><th>Chosen item</th><th style="width:16%">Est. &euro;</th></tr></thead>
   <tbody>
-    <tr><td>1</td><td>Compute module</td><td>Raspberry Pi CM4104032 (4GB/32GB/Wi-Fi)</td><td>75</td></tr>
-    <tr><td>2</td><td>Carrier board</td><td>Seeed Dual Gigabit Ethernet CM4 carrier (reRouter)</td><td>60</td></tr>
+    <tr><td>1</td><td>Compute</td><td>Raspberry Pi 5 (8GB)</td><td>92</td></tr>
+    <tr><td>2</td><td>2nd NIC</td><td>USB 3.0 &rarr; 2.5GbE adapter (RTL8156)</td><td>20</td></tr>
     <tr><td>3</td><td>4G modem</td><td>Huawei E3372h-320 (HiLink) + prepaid data SIM</td><td>45</td></tr>
     <tr><td>4</td><td>Touchscreen</td><td>5&Prime; HDMI capacitive, 800&times;480 (Waveshare)</td><td>50</td></tr>
-    <tr><td>5</td><td>PSU</td><td>Official 5V/3A USB-C</td><td>12</td></tr>
-    <tr><td>6</td><td>Cooling</td><td>Heatsink + 30mm 5V fan + Gore pressure vent</td><td>18</td></tr>
-    <tr><td>7</td><td>Case</td><td>Pelicase 1150/1200</td><td>55</td></tr>
-    <tr><td>8</td><td>Panel &amp; cabling</td><td>2&times; RJ45 feedthrough, SMA bulkhead + whip, USB-C panel mount, standoffs, short patch/HDMI/USB leads</td><td>45</td></tr>
-    <tr class="tot"><td></td><td>Total</td><td>per unit (ex. SIM plan)</td><td>~360</td></tr>
+    <tr><td>5</td><td>PSU</td><td>Official 27W (5.1V/5A) USB-C</td><td>17</td></tr>
+    <tr><td>6</td><td>Storage</td><td>microSD 32GB (A2)</td><td>8</td></tr>
+    <tr><td>7</td><td>Cooling</td><td>Pi 5 Active Cooler + Gore pressure vent</td><td>14</td></tr>
+    <tr><td>8</td><td>Case</td><td>Pelicase 1150/1200</td><td>55</td></tr>
+    <tr><td>9</td><td>Panel &amp; cabling</td><td>2&times; RJ45 feedthrough, SMA bulkhead + whip, USB-C panel mount, standoffs, short patch/HDMI/USB leads</td><td>45</td></tr>
+    <tr class="tot"><td></td><td>Total</td><td>per unit (ex. SIM plan)</td><td>~370</td></tr>
   </tbody>
 </table>
 <p class="muted">Second and subsequent units are flash-and-go from the golden image; only hardware cost repeats.</p>
@@ -181,7 +182,7 @@ Pelicase fabrication. None are hard; the time simply goes into polish and the ca
   <!-- fieldbox -->
   <rect x="520" y="150" width="230" height="150" rx="12" fill="#f7faff" stroke="#2563eb" stroke-width="2"/>
   <text x="635" y="182" text-anchor="middle" class="lbl" fill="#0f1b2d">FieldBox</text>
-  <text x="635" y="200" text-anchor="middle" class="sub">CM4 subnet router</text>
+  <text x="635" y="200" text-anchor="middle" class="sub">Pi 5 subnet router</text>
   <!-- WAN port -->
   <circle cx="536" cy="230" r="6" fill="#16a34a"/>
   <text x="550" y="234" class="sub">WAN — 4G / wired internet</text>
@@ -215,62 +216,66 @@ Pelicase fabrication. None are hard; the time simply goes into polish and the ca
 <h2>5 &nbsp;Internal wiring / block diagram</h2>
 <figure>
 <svg viewBox="0 0 960 470" role="img" aria-label="Internal wiring block diagram">
-  <!-- carrier -->
-  <rect x="360" y="70" width="250" height="330" rx="12" fill="#f7faff" stroke="#2563eb" stroke-width="2"/>
-  <text x="485" y="96" text-anchor="middle" class="lbl" fill="#0f1b2d">Seeed Dual-GbE CM4 carrier</text>
-  <rect x="405" y="120" width="160" height="70" rx="8" fill="#eef3fb" stroke="#9db4d6"/>
-  <text x="485" y="150" text-anchor="middle" class="lbl">CM4</text>
-  <text x="485" y="170" text-anchor="middle" class="sub">4GB · 32GB eMMC · Wi-Fi</text>
+  <!-- Raspberry Pi 5 -->
+  <rect x="380" y="80" width="210" height="310" rx="12" fill="#f7faff" stroke="#2563eb" stroke-width="2"/>
+  <text x="485" y="108" text-anchor="middle" class="lbl" fill="#0f1b2d">Raspberry Pi 5 (8GB)</text>
+  <rect x="420" y="130" width="130" height="56" rx="8" fill="#eef3fb" stroke="#9db4d6"/>
+  <text x="485" y="155" text-anchor="middle" class="lbl">BCM2712</text>
+  <text x="485" y="173" text-anchor="middle" class="sub">8GB · microSD boot</text>
 
-  <!-- port stubs on carrier (left) -->
+  <!-- port stubs (left) -->
   <g class="sub">
-    <rect x="352" y="215" width="8" height="16" fill="#16a34a"/><text x="368" y="228">ETH0</text>
-    <rect x="352" y="250" width="8" height="16" fill="#ea9a3e"/><text x="368" y="263">ETH1</text>
-    <rect x="352" y="285" width="8" height="16" fill="#5b6b7d"/><text x="368" y="298">USB 3.0</text>
-    <rect x="352" y="320" width="8" height="16" fill="#5b6b7d"/><text x="368" y="333">USB 3.0</text>
+    <rect x="372" y="200" width="8" height="16" fill="#ea9a3e"/><text x="388" y="213">GbE (built-in)</text>
+    <rect x="372" y="248" width="8" height="16" fill="#5b6b7d"/><text x="388" y="261">USB 3.0</text>
+    <rect x="372" y="296" width="8" height="16" fill="#5b6b7d"/><text x="388" y="309">USB 3.0</text>
   </g>
   <!-- right stubs -->
   <g class="sub" text-anchor="end">
-    <rect x="610" y="215" width="8" height="16" fill="#7c3aed"/><text x="602" y="228">micro-HDMI</text>
-    <rect x="610" y="285" width="8" height="16" fill="#b91c1c"/><text x="602" y="298">USB-C 5V</text>
-    <rect x="610" y="340" width="8" height="16" fill="#0891b2"/><text x="602" y="353">GPIO 5V</text>
+    <rect x="590" y="200" width="8" height="16" fill="#7c3aed"/><text x="582" y="213">micro-HDMI</text>
+    <rect x="590" y="266" width="8" height="16" fill="#b91c1c"/><text x="582" y="279">USB-C 5V</text>
+    <rect x="590" y="326" width="8" height="16" fill="#0891b2"/><text x="582" y="339">GPIO / fan</text>
   </g>
 
-  <!-- external components: left column -->
-  <rect x="90" y="205" width="180" height="40" rx="8" fill="#fff" stroke="#16a34a" stroke-width="1.6"/>
-  <text x="180" y="230" text-anchor="middle" class="lbl">Panel RJ45 — WAN</text>
-  <line x1="270" y1="223" x2="352" y2="223" stroke="#16a34a" stroke-width="2"/>
+  <!-- left column: LAN (built-in GbE) -->
+  <rect x="70" y="188" width="150" height="40" rx="8" fill="#fff" stroke="#ea9a3e" stroke-width="1.6"/>
+  <text x="145" y="213" text-anchor="middle" class="lbl">Panel RJ45 — LAN</text>
+  <line x1="220" y1="208" x2="372" y2="208" stroke="#ea9a3e" stroke-width="2"/>
 
-  <rect x="90" y="252" width="180" height="40" rx="8" fill="#fff" stroke="#ea9a3e" stroke-width="1.6"/>
-  <text x="180" y="277" text-anchor="middle" class="lbl">Panel RJ45 — LAN</text>
-  <line x1="270" y1="270" x2="352" y2="258" stroke="#ea9a3e" stroke-width="2"/>
+  <!-- WAN via USB 2.5GbE adapter -->
+  <rect x="70" y="244" width="120" height="40" rx="8" fill="#fff" stroke="#16a34a" stroke-width="1.6"/>
+  <text x="130" y="269" text-anchor="middle" class="lbl">RJ45 — WAN</text>
+  <rect x="210" y="244" width="130" height="40" rx="8" fill="#f2fbf5" stroke="#16a34a" stroke-width="1.6"/>
+  <text x="275" y="262" text-anchor="middle" class="sub">USB 2.5GbE</text>
+  <text x="275" y="277" text-anchor="middle" class="sub">RTL8156</text>
+  <line x1="190" y1="264" x2="210" y2="264" stroke="#16a34a" stroke-width="2"/>
+  <line x1="340" y1="264" x2="372" y2="256" stroke="#5b6b7d" stroke-width="2"/>
 
-  <rect x="70" y="300" width="200" height="56" rx="8" fill="#fff" stroke="#c7d2e0" stroke-width="1.5"/>
-  <text x="170" y="323" text-anchor="middle" class="lbl">4G modem E3372h</text>
-  <text x="170" y="342" text-anchor="middle" class="sub">USB · HiLink → wwan0</text>
-  <line x1="270" y1="315" x2="352" y2="293" stroke="#5b6b7d" stroke-width="2"/>
-  <!-- antenna -->
-  <rect x="70" y="372" width="200" height="34" rx="8" fill="#fff" stroke="#c7d2e0" stroke-width="1.5"/>
-  <text x="170" y="394" text-anchor="middle" class="sub">SMA panel antenna (4G)</text>
-  <line x1="140" y1="356" x2="140" y2="372" stroke="#5b6b7d" stroke-width="2"/>
+  <!-- 4G modem + antenna -->
+  <rect x="70" y="300" width="200" height="52" rx="8" fill="#fff" stroke="#c7d2e0" stroke-width="1.5"/>
+  <text x="170" y="322" text-anchor="middle" class="lbl">4G modem E3372h</text>
+  <text x="170" y="340" text-anchor="middle" class="sub">USB · HiLink → wwan0</text>
+  <line x1="270" y1="322" x2="372" y2="304" stroke="#5b6b7d" stroke-width="2"/>
+  <rect x="70" y="366" width="200" height="30" rx="8" fill="#fff" stroke="#c7d2e0" stroke-width="1.5"/>
+  <text x="170" y="386" text-anchor="middle" class="sub">SMA panel antenna (4G)</text>
+  <line x1="140" y1="352" x2="140" y2="366" stroke="#5b6b7d" stroke-width="2"/>
 
   <!-- right column -->
-  <rect x="700" y="200" width="190" height="56" rx="8" fill="#fff" stroke="#7c3aed" stroke-width="1.6"/>
-  <text x="795" y="223" text-anchor="middle" class="lbl">5&Prime; HDMI touchscreen</text>
-  <text x="795" y="242" text-anchor="middle" class="sub">in lid · 800×480 · USB touch</text>
-  <line x1="618" y1="223" x2="700" y2="223" stroke="#7c3aed" stroke-width="2"/>
-  <line x1="700" y1="248" x2="360" y2="330" stroke="#5b6b7d" stroke-width="1.4" stroke-dasharray="4 3"/>
-  <text x="640" y="300" class="sub">USB touch → carrier</text>
+  <rect x="700" y="185" width="190" height="56" rx="8" fill="#fff" stroke="#7c3aed" stroke-width="1.6"/>
+  <text x="795" y="208" text-anchor="middle" class="lbl">5&Prime; HDMI touchscreen</text>
+  <text x="795" y="227" text-anchor="middle" class="sub">in lid · 800×480 · USB touch</text>
+  <line x1="598" y1="208" x2="700" y2="208" stroke="#7c3aed" stroke-width="2"/>
+  <line x1="700" y1="233" x2="380" y2="304" stroke="#5b6b7d" stroke-width="1.4" stroke-dasharray="4 3"/>
+  <text x="636" y="292" class="sub">USB touch → Pi</text>
 
-  <rect x="700" y="278" width="190" height="40" rx="8" fill="#fff" stroke="#b91c1c" stroke-width="1.6"/>
-  <text x="795" y="303" text-anchor="middle" class="lbl">Panel USB-C — 5V PSU</text>
-  <line x1="618" y1="298" x2="700" y2="298" stroke="#b91c1c" stroke-width="2"/>
+  <rect x="700" y="258" width="190" height="40" rx="8" fill="#fff" stroke="#b91c1c" stroke-width="1.6"/>
+  <text x="795" y="283" text-anchor="middle" class="lbl">Panel USB-C — 27W PSU</text>
+  <line x1="598" y1="278" x2="700" y2="278" stroke="#b91c1c" stroke-width="2"/>
 
-  <rect x="700" y="332" width="190" height="40" rx="8" fill="#fff" stroke="#0891b2" stroke-width="1.6"/>
-  <text x="795" y="357" text-anchor="middle" class="lbl">30mm fan</text>
-  <line x1="618" y1="350" x2="700" y2="352" stroke="#0891b2" stroke-width="2"/>
+  <rect x="700" y="316" width="190" height="40" rx="8" fill="#fff" stroke="#0891b2" stroke-width="1.6"/>
+  <text x="795" y="341" text-anchor="middle" class="lbl">Active Cooler (fan)</text>
+  <line x1="598" y1="334" x2="700" y2="336" stroke="#0891b2" stroke-width="2"/>
 </svg>
-<figcaption>Colour key: green = WAN Ethernet, amber = LAN Ethernet, grey = USB, violet = display, red = power, cyan = fan.</figcaption>
+<figcaption>Colour key: amber = LAN (Pi 5 built-in GbE), green = WAN (via USB 2.5GbE adapter), grey = USB, violet = display, red = power, cyan = fan.</figcaption>
 </figure>
 <div class="note">Interface names are pinned by MAC in <code>/etc/systemd/network/*.link</code> so <code>wan0</code>/<code>lan0</code>/<code>wwan0</code> never swap around between boots.</div>
 </section>
@@ -289,15 +294,19 @@ Pelicase fabrication. None are hard; the time simply goes into polish and the ca
   <!-- latches -->
   <rect x="360" y="18" width="60" height="14" rx="4" fill="#33465b"/>
   <rect x="480" y="18" width="60" height="14" rx="4" fill="#33465b"/>
-  <!-- carrier board -->
+  <!-- Raspberry Pi 5 -->
   <rect x="330" y="120" width="260" height="150" rx="10" fill="#eef3fb" stroke="#2563eb" stroke-width="2"/>
-  <text x="460" y="150" text-anchor="middle" class="lbl" fill="#1d4ed8">CM4 + dual-GbE carrier</text>
+  <text x="460" y="150" text-anchor="middle" class="lbl" fill="#1d4ed8">Raspberry Pi 5 (8GB)</text>
   <rect x="395" y="165" width="130" height="70" rx="6" fill="#dbe6f7" stroke="#9db4d6"/>
-  <text x="460" y="205" text-anchor="middle" class="sub">CM4 module</text>
+  <text x="460" y="205" text-anchor="middle" class="sub">BCM2712 · 8GB</text>
   <!-- 4G modem -->
-  <rect x="120" y="150" width="150" height="60" rx="8" fill="#fff" stroke="#c7d2e0"/>
-  <text x="195" y="176" text-anchor="middle" class="lbl">4G modem</text>
-  <text x="195" y="194" text-anchor="middle" class="sub">USB, cable-tied</text>
+  <rect x="120" y="150" width="150" height="56" rx="8" fill="#fff" stroke="#c7d2e0"/>
+  <text x="195" y="174" text-anchor="middle" class="lbl">4G modem</text>
+  <text x="195" y="192" text-anchor="middle" class="sub">USB, cable-tied</text>
+  <!-- USB 2.5GbE adapter -->
+  <rect x="120" y="212" width="150" height="28" rx="8" fill="#fff" stroke="#16a34a" stroke-width="1.4"/>
+  <text x="195" y="230" text-anchor="middle" class="sub">USB 2.5GbE → WAN</text>
+  <line x1="270" y1="226" x2="330" y2="226" stroke="#16a34a" stroke-width="1.4"/>
   <!-- fan + vent -->
   <circle cx="195" cy="278" r="34" fill="#fff" stroke="#0891b2" stroke-width="1.6"/>
   <text x="195" y="282" text-anchor="middle" class="sub">fan</text>
@@ -427,13 +436,14 @@ subnet &rarr; light goes green. The only control they ever need is <strong>Chang
 <table>
   <thead><tr><th style="width:14%">Group</th><th>Item</th><th style="width:8%">Qty</th><th style="width:12%">Est. &euro;</th></tr></thead>
   <tbody>
-    <tr><td rowspan="5">Core</td><td>Raspberry Pi CM4104032 (4GB/32GB/Wi-Fi)</td><td>1</td><td>75</td></tr>
-    <tr><td>Seeed Dual-GbE CM4 carrier (reRouter CM4001)</td><td>1</td><td>60</td></tr>
+    <tr><td rowspan="6">Core</td><td>Raspberry Pi 5 (8GB)</td><td>1</td><td>92</td></tr>
+    <tr><td>USB 3.0 &rarr; 2.5GbE adapter (RTL8156)</td><td>1</td><td>20</td></tr>
     <tr><td>Huawei E3372h-320 4G modem (HiLink)</td><td>1</td><td>35</td></tr>
     <tr><td>Prepaid data SIM (mini / 2FF)</td><td>1</td><td>plan</td></tr>
     <tr><td>5&Prime; HDMI capacitive touchscreen 800&times;480</td><td>1</td><td>45</td></tr>
+    <tr><td>microSD 32GB (A2)</td><td>1</td><td>8</td></tr>
 
-    <tr><td rowspan="2">Power</td><td>Official 5V/3A USB-C PSU</td><td>1</td><td>12</td></tr>
+    <tr><td rowspan="2">Power</td><td>Official 27W (5.1V/5A) USB-C PSU</td><td>1</td><td>17</td></tr>
     <tr><td>Panel-mount USB-C feedthrough</td><td>1</td><td>8</td></tr>
 
     <tr><td rowspan="4">Net &amp; RF</td><td>RJ45 Cat6 feedthrough couplers (WAN + LAN)</td><td>2</td><td>10</td></tr>
@@ -444,21 +454,18 @@ subnet &rarr; light goes green. The only control they ever need is <strong>Chang
     <tr><td rowspan="2">Display</td><td>micro-HDMI &rarr; HDMI cable ~0.3 m</td><td>1</td><td>6</td></tr>
     <tr><td>USB-A &rarr; micro-USB cable (touch)</td><td>1</td><td>3</td></tr>
 
-    <tr><td rowspan="3">Cooling</td><td>CM4 heatsink</td><td>1</td><td>5</td></tr>
-    <tr><td>30 mm 5V fan</td><td>1</td><td>4</td></tr>
+    <tr><td rowspan="2">Cooling</td><td>Pi 5 Active Cooler (fan + heatsink)</td><td>1</td><td>6</td></tr>
     <tr><td>Gore pressure-equalization vent</td><td>1</td><td>8</td></tr>
 
-    <tr><td rowspan="5">Case &amp; mech</td><td>Pelicase 1150 / 1200</td><td>1</td><td>55</td></tr>
+    <tr><td rowspan="4">Case &amp; mech</td><td>Pelicase 1150 / 1200</td><td>1</td><td>55</td></tr>
     <tr><td>M2.5 standoff + screw kit</td><td>1</td><td>8</td></tr>
     <tr><td>Cable ties + adhesive mounts</td><td>1</td><td>4</td></tr>
     <tr><td>Connector panel (blank / 3D-printed)</td><td>1</td><td>5</td></tr>
-    <tr><td>Thermal pads / paste</td><td>1</td><td>3</td></tr>
 
-    <tr><td>Flashing</td><td>USB-A &harr; USB-C data cable (rpiboot) — may own</td><td>1</td><td>4</td></tr>
     <tr class="tot"><td></td><td>Total (ex. shipping + SIM plan)</td><td></td><td>~370</td></tr>
   </tbody>
 </table>
-<div class="note warn"><strong>Confirm before ordering:</strong> (1) the E3372h is the <strong>HiLink</strong> variant, not stick/PPP; (2) the carrier revision's display output is <strong>micro-HDMI</strong> (matches the screen); (3) disable the SIM PIN and disable Tailscale key expiry.</div>
+<div class="note warn"><strong>Confirm before ordering:</strong> (1) the E3372h is the <strong>HiLink</strong> variant, not stick/PPP; (2) the USB 2.5GbE adapter is <strong>RTL8156</strong>-based (native Pi OS support); (3) disable the SIM PIN and disable Tailscale key expiry.</div>
 </section>
 </div>
 

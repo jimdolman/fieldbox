@@ -13,7 +13,10 @@ is a solved, robust problem; the effort is in the **idiot-proof touchscreen GUI*
 **dual-WAN failover**, and the **Pelicase fabrication**.
 
 ### Decisions locked with Jim
-- **WAN:** 2× Ethernet + 4G, **auto-failover** (wired internet preferred, 4G takes over) → dual-GbE CM4 carrier board.
+- **Platform:** **Raspberry Pi 5 (8GB)** + a **USB 2.5GbE adapter** for the 2nd Ethernet port —
+  chosen over CM4 + reRouter carrier purely for **availability** (Pi 5 is next-day at NL shops;
+  CM4 has backorder lead times). Same OS/software/touchscreen; the 2nd NIC is USB instead of PCIe.
+- **WAN:** 2× Ethernet + 4G, **auto-failover** (wired internet preferred, 4G takes over).
 - **Tailnet join:** **pre-locked to Jim's tailnet** (tagged auth key + ACL autoApprovers), zero login.
 - **Subnet:** **auto-detected** from the LAN port's DHCP lease, **changeable on the touchscreen**.
 - **Power:** mains USB-C, **no battery**; rely on a **hardware watchdog + self-heal** ("if the site is down, we don't need to be online").
@@ -31,12 +34,13 @@ Finalised part choices (see `docs/SHOPPING-LIST.md` for the full purchase list):
 
 | Part | Choice | Notes |
 |---|---|---|
-| Compute | **Raspberry Pi CM4104032** (4GB RAM / 32GB eMMC / Wi‑Fi) | eMMC = no SD failures; Wi‑Fi = free 3rd WAN later |
-| Carrier | **Seeed Dual Gigabit Ethernet CM4 carrier (reRouter CM4001)** | Real dual GbE (native + PCIe RTL8111), 2× USB 3.0, micro‑HDMI |
+| Compute | **Raspberry Pi 5 (8GB)** | Next-day at NL shops; boots from microSD/NVMe (much simpler than CM4 eMMC) |
+| 2nd NIC | **USB 3.0 → 2.5GbE adapter** (Realtek RTL8156) | The WAN port. Well-supported on Pi OS Bookworm. Pinned `wan0`. |
 | WAN #2 | **Huawei E3372h‑320 (HiLink)** + prepaid SIM | HiLink = DHCP ethernet iface, no ModemManager/PPP. Pinned `wwan0`, metric 700. **Disable SIM PIN.** |
-| Display | **5" HDMI capacitive touchscreen, 800×480** (Waveshare 5inch HDMI LCD (H)) | HDMI chosen because the carrier exposes **micro‑HDMI only** (no DSI). Touch over USB. |
-| Power | Official **5V/3A USB‑C** PSU | Panel-mount USB‑C feedthrough on the case |
-| Cooling | Heatsink + 30mm 5V fan + Gore/vent plug | Sealed Pelicase needs airflow + a pressure vent |
+| Display | **5" HDMI capacitive touchscreen, 800×480** (Waveshare 5inch HDMI LCD (H)) | Via micro‑HDMI → HDMI; touch over USB. (Pi 5 DSI + official Touch Display 2 is an alt.) |
+| Power | Official **27W (5.1V/5A) USB‑C** PSU | Pi 5 needs 27W for full USB budget (NIC + modem + screen). Panel-mount USB‑C feedthrough. |
+| Storage | **microSD 32GB (A2)** | Image with Raspberry Pi Imager — no rpiboot/eMMC dance |
+| Cooling | **Official Pi 5 Active Cooler** + Gore/vent plug | Fan+heatsink in one; sealed Pelicase needs a pressure vent |
 | Case | Pelicase 1150/1200 | Panel-mount: 2× RJ45 Cat6 feedthrough, USB‑C power, SMA bulkhead for 4G antenna |
 
 Second-unit build is flash-and-go from a golden image.
@@ -48,8 +52,8 @@ Second-unit build is flash-and-go from a golden image.
 Stable interface names via `systemd .link` files (match by MAC/PCI path → pin names), because
 the two NICs can otherwise enumerate inconsistently:
 
-- `wan0` — wired WAN RJ45 → DHCP client, **default route metric 100** (preferred)
-- `lan0` — production-network RJ45 → DHCP client, **never a default route** (`ipv4.never-default=yes`)
+- `lan0` — **Pi 5 built-in GbE** → production network we subnet-route → DHCP client, **never a default route** (`ipv4.never-default=yes`)
+- `wan0` — **USB 2.5GbE adapter** → wired WAN → DHCP client, **default route metric 100** (preferred)
 - `wwan0` — 4G HiLink modem (E3372h) → DHCP client, **default route metric 700** (backup), marked metered
 
 **Failover:** run **NetworkManager** (Bookworm default) with per-connection route metrics + its
@@ -129,8 +133,9 @@ default route takes over automatically; re-plugging fails back. `lan0` never car
 ---
 
 ## Buy-early checks (before ordering)
-- **Carrier display output:** confirm the exact reRouter revision's display connector is **micro‑HDMI**
-  (it is on current boards) — the chosen 5" screen is HDMI to match.
+- **USB 2.5GbE adapter:** pick a **Realtek RTL8156**-based one (native Pi OS Bookworm support).
+- **USB power budget:** with the 27W PSU the Pi 5 gives 5V/5A; the touchscreen + NIC + modem fit,
+  but a small **powered USB hub** is cheap insurance if the screen browns out.
 - **4G firmware:** confirm the E3372h is the **HiLink** (USB-ethernet) firmware, not the stick/PPP one;
   **disable the SIM PIN** before first insert. Carrier CGNAT is fine for Tailscale (DERP/NAT traversal).
 - **Auth key expiry:** disable device key expiry in the admin console so it never drops off.
