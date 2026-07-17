@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8" />
+<title>FieldBox — Boodschappenlijst (NL)</title>
+<style>
+  @page { size: A4; margin: 14mm 13mm 15mm; }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font: 10.5pt/1.45 -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1b2430; margin: 0; }
+  h1 { font-size: 24pt; letter-spacing: -0.5px; margin: 0 0 2px; color: #0f1b2d; }
+  h2 { font-size: 13pt; margin: 18px 0 4px; padding-left: 9px; border-left: 4px solid #2563eb; color: #0f1b2d; }
+  .eyebrow { color: #2563eb; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-size: 9pt; }
+  p { margin: .4em 0; }
+  a { color: #2563eb; text-decoration: none; }
+  small, .muted { color: #5b6b7d; }
+  code { font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 9pt; background: #f1f4f8; padding: 1px 5px; border-radius: 4px; }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 9.5pt; }
+  th, td { text-align: left; padding: 5px 7px; border-bottom: 1px solid #e4e9f0; vertical-align: top; }
+  thead th { background: #f4f7fb; border-bottom: 1.5px solid #cdd8e6; color: #33465b; font-size: 8.3pt; text-transform: uppercase; letter-spacing: .4px; }
+  tbody tr:nth-child(even) { background: #fafbfd; }
+  .price { font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 600; }
+  .tot td { border-top: 1.5px solid #cdd8e6; font-weight: 700; background: #eef3fb; }
+  .note { background: #f6f9ff; border: 1px solid #d6e2f6; border-left: 4px solid #2563eb; border-radius: 8px; padding: 8px 12px; font-size: 9.5pt; margin: 8px 0; }
+  .note.warn { background: #fff8f1; border-color: #f3d9bd; border-left-color: #ea9a3e; }
+  .grp { font-weight: 700; color: #33465b; background: #f4f7fb; }
+  section { break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<div class="eyebrow">FieldBox &middot; Inkoop</div>
+<h1>Boodschappenlijst &amp; prijsvergelijk (NL)</h1>
+<p class="muted">Prijzen &plusmn; juli 2026, incl. btw waar bekend. Webshops wijzigen prijzen vaak en tonen soms
+ex. btw &mdash; <strong>controleer live</strong> via de links. Schattingen zijn met <code>~</code> gemarkeerd.</p>
+
+<section>
+<h2>Prijsvergelijk — grote onderdelen</h2>
+<table>
+  <thead><tr><th>#</th><th>Onderdeel</th><th>Beste NL-optie</th><th>Prijs</th><th>Goedkoper / alternatief</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><strong>CM4104032</strong> (4GB/32GB/WiFi)</td><td><a href="https://www.tinytronics.nl/en/development-boards/single-board-computers/raspberry-pi-compute-module-4-cm4-4gb-32gb-emmc">TinyTronics</a> / Kiwi</td><td class="price">~&euro;85</td><td>RaspberryStore &middot; MSRP $120</td></tr>
+    <tr><td>2</td><td><strong>Seeed Dual-GbE carrier</strong> (kaal)</td><td><a href="https://www.antratek.nl/carrier-board-for-raspberry-pi-cm4">Antratek</a></td><td class="price">&euro;47,19</td><td>evt. excl. btw &rarr; ~&euro;57 &middot; AliExpress ~$73</td></tr>
+    <tr><td>3</td><td><strong>Huawei E3372h-320</strong> (HiLink)</td><td><a href="https://www.coolblue.nl/product/599673/huawei-e3372h-320-4g-dongle.html">Coolblue</a> / <a href="https://www.bol.com/nl/nl/p/huawei-e3372h-320-modem-voor-mobiele-netwerken/9200000043463514/">bol</a></td><td class="price">&euro;56,95</td><td><strong><a href="https://www.mediawinkel.eu/nl/huawei-e3372-325.html">E3372-325 &euro;38,95</a></strong> of K5161h &euro;34,99</td></tr>
+    <tr><td>4</td><td><strong>Waveshare 5&Prime; HDMI (H)</strong> WS-14300</td><td><a href="https://www.tinytronics.nl/en/displays/tft/waveshare-5-inch-hdmi-tft-lcd-(h)-display-800*480-with-touchscreen-raspberry-pi-compatible">TinyTronics</a></td><td class="price">~&euro;57</td><td><a href="https://www.welectron.com/Waveshare-14300-5inch-HDMI-LCD-H_1">Welectron &euro;52,90</a></td></tr>
+    <tr><td>5</td><td><strong>Voeding</strong> 5.1V/3A (15W, officieel)</td><td>TinyTronics / Kiwi</td><td class="price">~&euro;9</td><td>of 27W: <a href="https://opencircuit.shop/product/raspberry-pi-5-usb-c-power-supply-27w-white-eu">OpenCircuit &euro;16,55</a></td></tr>
+    <tr><td>6</td><td><strong>Peli Case 1150</strong> (leeg)</td><td><a href="https://www.zaklampen.nl/peli-case-1150-koffer-klein-zilver-zonder-schuim.html">Zaklampen</a> / <a href="https://www.stagefreaks.nl/peli-1150-case-leeg-zwart.html">Stagefreaks</a></td><td class="price">~&euro;43</td><td>mét schuim ~&euro;76</td></tr>
+  </tbody>
+</table>
+<div class="note"><strong>Grootste besparing:</strong> de <strong>E3372-325</strong> of <strong>K5161h</strong> i.p.v. de -320 scheelt ~&euro;20 en doet hetzelfde (HiLink = USB-ethernet). Controleer wel dat het de HiLink-firmware is.</div>
+</section>
+
+<section>
+<h2>Compleet mandje (1 unit)</h2>
+<table>
+  <thead><tr><th>Onderdeel</th><th>Shop</th><th>Prijs</th></tr></thead>
+  <tbody>
+    <tr><td class="grp" colspan="3">Kern</td></tr>
+    <tr><td>Raspberry Pi CM4104032</td><td>TinyTronics</td><td class="price">~&euro;85</td></tr>
+    <tr><td>Seeed Dual-GbE carrier (kaal)</td><td>Antratek</td><td class="price">&euro;47,19</td></tr>
+    <tr><td>Huawei E3372h-320 (HiLink)</td><td>Coolblue</td><td class="price">&euro;56,95</td></tr>
+    <tr><td>Prepaid data-SIM</td><td>KPN / Lebara / Lyca</td><td class="price">plan</td></tr>
+    <tr><td>Waveshare 5&Prime; HDMI (H) WS-14300</td><td>TinyTronics</td><td class="price">~&euro;57</td></tr>
+    <tr><td class="grp" colspan="3">Voeding &amp; koeling</td></tr>
+    <tr><td>Officiële 5.1V/3A USB-C voeding</td><td>TinyTronics / Kiwi</td><td class="price">~&euro;9</td></tr>
+    <tr><td>Paneel-USB-C doorvoer</td><td>TinyTronics / Amazon.nl</td><td class="price">~&euro;8</td></tr>
+    <tr><td>CM4 heatsink</td><td>TinyTronics</td><td class="price">~&euro;5</td></tr>
+    <tr><td>30mm 5V fan</td><td>TinyTronics</td><td class="price">~&euro;4</td></tr>
+    <tr><td>Gore drukventiel (M12)</td><td>Amazon.nl</td><td class="price">~&euro;8</td></tr>
+    <tr><td class="grp" colspan="3">Netwerk &amp; RF</td></tr>
+    <tr><td>2&times; RJ45 Cat6 keystone doorvoer</td><td>TinyTronics / Amazon.nl</td><td class="price">~&euro;7</td></tr>
+    <tr><td>2&times; korte Cat6 patch 0,25 m</td><td>TinyTronics / Allekabels</td><td class="price">~&euro;6</td></tr>
+    <tr><td>TS-9 &rarr; SMA pigtail</td><td>Amazon.nl / AliExpress</td><td class="price">~&euro;6</td></tr>
+    <tr><td>SMA 4G-antenne (whip)</td><td>Amazon.nl</td><td class="price">~&euro;8</td></tr>
+    <tr><td class="grp" colspan="3">Kabels, behuizing &amp; montage</td></tr>
+    <tr><td>micro-HDMI &rarr; HDMI kabel 0,3 m</td><td>Allekabels / Amazon.nl</td><td class="price">~&euro;6</td></tr>
+    <tr><td>USB-A &rarr; micro-USB kabel (touch)</td><td>Amazon.nl</td><td class="price">~&euro;3</td></tr>
+    <tr><td>Peli Case 1150 (leeg)</td><td>Zaklampen / Stagefreaks</td><td class="price">~&euro;43</td></tr>
+    <tr><td>M2.5 afstandsbusjes + schroefjes</td><td>TinyTronics / Amazon.nl</td><td class="price">~&euro;8</td></tr>
+    <tr><td>Kabelbinders + plakvoetjes</td><td>Gamma / Amazon.nl</td><td class="price">~&euro;4</td></tr>
+    <tr><td>Paneel (ABS/alu of 3D-print)</td><td>eigen / print</td><td class="price">~&euro;5</td></tr>
+    <tr><td>Thermal pads</td><td>TinyTronics</td><td class="price">~&euro;3</td></tr>
+    <tr><td>USB-A&harr;USB-C datakabel (rpiboot)</td><td>Amazon.nl</td><td class="price">~&euro;4</td></tr>
+    <tr class="tot"><td>Totaal</td><td>ex. verzending + SIM-abonnement</td><td class="price">~&euro;380</td></tr>
+  </tbody>
+</table>
+</section>
+
+<section>
+<h2>Slim bestellen (minder verzendkosten)</h2>
+<p><strong>TinyTronics</strong> (Eindhoven): CM4, display, voeding + de meeste kleine onderdelen in één order &middot;
+<strong>Antratek</strong>: de dual-GbE carrier &middot; <strong>Coolblue/bol</strong>: de 4G-modem &middot;
+<strong>Zaklampen/Stagefreaks</strong>: de Peli 1150. &rarr; ~4 bestellingen i.p.v. 10.</p>
+<div class="note warn"><strong>Check vooraf:</strong> (1) E3372 is de <strong>HiLink</strong>-variant, niet Stick/PPP; (2) de carrier-revisie heeft <strong>micro-HDMI</strong> (past bij het scherm); (3) zet de <strong>SIM-pincode uit</strong> en zet de Tailscale key-expiry uit voor het apparaat.</div>
+<p class="muted">Bronnen geraadpleegd juli 2026. Volledige lijst met bron-links: <code>docs/BOODSCHAPPENLIJST-NL.md</code> in de repo.</p>
+</section>
+
+</body>
+</html>
